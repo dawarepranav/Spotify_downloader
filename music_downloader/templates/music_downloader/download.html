@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Spotify Playlist Downloader</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Spotify Playlist Downloader</h1>
+        <form method="POST" action="">
+         {% csrf_token %}
+         {{ form.as_p }}
+         <button type="submit" name="fetch_songs" value="fetch">Fetch Songs</button>
+      </form>
+
+    </div>
+</body>
+</html>

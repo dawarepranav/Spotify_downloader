@@ -1,0 +1,23 @@
+<form method="POST" action="">
+    {% csrf_token %}
+    <input type="hidden" name="playlist_url" value="{{ playlist.external_urls.spotify }}">
+    <input type="hidden" name="quality" value="{{ quality }}">
+    {% for track in track_list %}
+        <div>
+            <input type="checkbox" name="tracks" value="{{ track.name }}|{{ track.artist }}">
+            {{ track.name }} - {{ track.artist }}
+        </div>
+    {% endfor %}
+    <button type="submit" name="download_selected" value="download">Download Selected</button>
+</form>
+
+
+
+<script>
+    document.getElementById('select-all').onclick = function() {
+        var checkboxes = document.getElementsByName('tracks');
+        for (var checkbox of checkboxes) {
+            checkbox.checked = this.checked;
+        }
+    }
+</script>
