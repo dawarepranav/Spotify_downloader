@@ -3,6 +3,9 @@ from .forms import PlaylistForm
 import yt_dlp
 import spotipy
 from spotipy.oauth2 import SpotifyClientCredentials
+import os
+import imageio_ffmpeg
+
 
 def download_playlist(request):
     form = PlaylistForm(request.POST or None)
@@ -34,8 +37,11 @@ def download_playlist(request):
                 print(f"Selected tracks: {selected_tracks}")
 
                 for track in selected_tracks:
-                    track_name, artist_name = track.split('|')
-                    download_song(track_name.strip(), artist_name.strip(), quality)
+                    try:
+                        track_name, artist_name = track.split('|')
+                        download_song(track_name.strip(), artist_name.strip(), quality)
+                    except Exception as e:
+                        print(f"Error downloading track '{track}': {e}")
 
                 return render(request, 'music_downloader/success.html')
 
@@ -44,16 +50,22 @@ def download_playlist(request):
 
     return render(request, 'music_downloader/download.html', {'form': form})
 
+
 def download_song(track_name, artist_name, quality='192'):
     query = f"{track_name} {artist_name}"
+
+    # Use portable ffmpeg
+    ffmpeg_path = imageio_ffmpeg.get_ffmpeg_exe()
+    os.environ["PATH"] += os.pathsep + os.path.dirname(ffmpeg_path)
+
     ydl_opts = {
-        'format': f'bestaudio/best',
+        'format': 'bestaudio/best',
         'postprocessors': [{
             'key': 'FFmpegExtractAudio',
             'preferredcodec': 'mp3',
             'preferredquality': quality,
         }],
-        'ffmpeg_location': 'C:\\Users\\prana\\Downloads\\ffmpeg-master-latest-win64-gpl\\ffmpeg-master-latest-win64-gpl\\bin',
+        'ffmpeg_location': ffmpeg_path,
         'outtmpl': f'{query}.mp3',
     }
 
