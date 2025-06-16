@@ -112,7 +112,6 @@ mistune==3.1.2
 modelscope==1.18.1
 mongoengine==0.29.1
 mpmath==1.3.0
--e git+https://github.com/modelscope/ms-swift.git@045d8c14342a860637ecdf59588c02c769ac48d2#egg=ms_swift
 multidict==6.1.0
 multiprocess==0.70.16
 mutagen==1.47.0
