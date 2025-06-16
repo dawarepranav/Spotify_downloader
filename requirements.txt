@@ -5,3 +5,4 @@ pydub==0.25.1
 mutagen==1.47.0
 requests==2.32.3
 gunicorn==23.0.0
+imageio-ffmpeg==0.4.9
