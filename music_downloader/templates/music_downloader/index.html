@@ -1,0 +1,45 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spotify Playlist Downloader</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'downloader/styles.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h1>Music Downloader</h1>
+        <form method="POST">
+            {% csrf_token %}
+            <div class="form-group">
+                <input type="text" placeholder="Paste your playlist link here..." name="playlist_url">
+            </div>
+            <button type="submit" name="fetch_songs" value="fetch">Fetch Songs</button>
+        </form>
+
+        <h2>Your Playlist:</h2>
+        <form method="POST">
+            {% csrf_token %}
+            <input type="hidden" name="playlist_url" value="{{ playlist_url }}">
+            <input type="hidden" name="quality" value="{{ quality }}">
+            <div class="checkbox-container">
+                {% for track in track_list %}
+                    <div>
+                        <input type="checkbox" name="tracks" value="{{ track.name }}|{{ track.artist }}">
+                        {{ track.name }} - {{ track.artist }}
+                    </div>
+                {% endfor %}
+            </div>
+            <button type="submit" name="download_selected" value="download">Download Selected</button>
+        </form>
+
+        {% if download_success %}
+        <div class="success-message">
+            Success! All songs have been successfully downloaded!
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>
